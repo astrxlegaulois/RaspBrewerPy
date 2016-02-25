@@ -9,27 +9,27 @@ import datetime
 
 class Step:
     """
-        A step is a componnent of a receipe. It can be a transition, level step or stop until user confirmation
+        A Step is a componnent of a Receipe. It can be a TRANSITION, LEVEL or STOP to pause the receipe until user confirmation
     """
     
     
     def __init__(self, a_name, a_type, a_duration, a_temperature=0):
         """
             Constructor
-            :param a_name: Name of the step
-            :param a_type: Type of the step within LEVEL,TRANSITION or STOP
-            :param a_duration: Duration of the step in minutes (unused for a STOP Step)
-            :param a_temperature: If the step is not TRANSITION, the target temperature shall be send as parameter
+            :param a_name: Name of the Step
+            :param a_type: Type of the Step within LEVEL,TRANSITION or STOP
+            :param a_duration: Duration of the Step in minutes (unused for a STOP Step)
+            :param a_temperature: If the Step is not TRANSITION, the target temperature shall be send as parameter
             :type a_name: String
             :type a_type: int LEVEL,TRANSITION or STOP
             :type a_duration: unsigned int
             :type a_temperature: int
             
             :Exemple:
-            >>> new Step("Alpha proteines conversion step", LEVEL, 35, 62)
+            >>> new Step("Alpha proteines conversion Step", LEVEL, 35, 62)
             good!
             
-            .. warnings:: This function is unprotected agains wrong parameters types or values. Use carfully
+            .. warnings:: This function is unprotected against wrong parameters types or values. Use carfully
             .. todo:: Make the function more robust to lazy inputers
         """
         self.__name = a_name
@@ -41,9 +41,9 @@ class Step:
 
     def get_name(self):
         """
-            Returns the name of the step
+            Returns the name of the Step
             
-            :return: Name of the step
+            :return: Name of the Step
             :rtype: Sting
         """
         return self.__name
@@ -51,9 +51,9 @@ class Step:
       
     def get_type(self):
         """
-            Returns the type of the step
+            Returns the type of the Step
             
-            :return: Type of the step
+            :return: Type of the Step
             :rtype: int LEVEL,TRANSITION or STOP
         """
         return self.__step_type
@@ -61,9 +61,9 @@ class Step:
 
     def get_temperature(self):
         """
-            Returns the target temperature of the step
+            Returns the target temperature of the Step
             
-            :return: Target temperature of the step in degrees Celcius
+            :return: Target temperature of the Step in degrees Celcius
             :rtype: int
         """
         return self.__temperature
@@ -71,9 +71,9 @@ class Step:
       
     def get_duration(self):
         """
-            Returns the duration of the step
+            Returns the duration of the Step
             
-            :return: Requested duration of the step in minutes (ignored for a STOP Step)
+            :return: Requested duration of the Step in minutes (value never used for a STOP Step)
             :rtype: unsigned int
         """
         return self.__duration
@@ -81,11 +81,11 @@ class Step:
 
     def interpolation(self, start_temperature, start_time, stop_temperature, current_time):
         """
-            This function defines the target temperature at every seconds during a TRANSITION step. The computation is such as the interpolation is linear between the previous step temperature and the following.
+            This function defines the target temperature at every seconds during a TRANSITION Step. The computation is such as the interpolation is linear between the previous Step's temperature and the temperature of the following one.
             
-            :param start_temperature: Previous step's start temperature in degrees Celcius
-            :param start_time: Time at the beggining of the transition step
-            :param stop_temperature: Next step's start temperature in degrees Celcius
+            :param start_temperature: Previous Step's start temperature in degrees Celcius
+            :param start_time: Time at the beggining of the TRANSITION Step
+            :param stop_temperature: Next Step's start temperature in degrees Celcius
             :param current_time: Time now
             :type start_temperature: int
             :type start_time: Python's dateTime
@@ -117,35 +117,77 @@ class Step:
 
 class Receipe:
     """
-        A receipe is a list of temperature transitions, level steps and stops (waiting for human confirmation'
+        A receipe is a list of temperature TRANSISIONs, LEVEL Steps and STOPs (waiting for human confirmation). The Receipe must begin with a TRANSITION and there shall always be a TRANSITION between two any other type of Step. No TRANSITION shall be next to a TRANSITION.
     """
     
-    
     def __init__(self, a_name):
+        """
+            Constructor for an empty Receipe
+            
+            :param a_name: Name of the Receipe
+            :type a_name: String
+        """
         self.__name = a_name
         self.__receipe_list=[]
         self.__cursor=None
         self.__timer=None
 
+
     def add_step(self, a_step):
-        #TODO exception if(len(__receipe_list)==0 && a_step.get_type()==LEVEL)
-        #TODO exception if no transistion between 2 steps of different temperature
-        #TODO exception if two transitions are consecutive
+        """
+            This function appends an already fully featured Step to the Receipe's list
+            
+            :param a_step: The Step to add at the end of the Receipe
+            :type a_step: Step
+
+            .. warnings:: This function is unprotected against wrong parameters types or values. Use carfully.
+            .. todo:: Make the function more robust to lazy inputers : exception if(len(__receipe_list)==0 && a_step.get_type()!=TRANSITION)
+            .. todo:: Make the function more robust to lazy inputers : exception if no transistion between 2 steps of different temperature
+            .. todo:: Make the function more robust to lazy inputers : exception if two transitions are consecutive
+        """
         self.__receipe_list.append(a_step)
 
+
     def get_name(self):
+        """
+            Returns the name of the Receipe
+            
+            :return: Name of the Receipe
+            :rtype: Sting
+        """
         return self.__name
       
+      
     def start(self,initial_temperature):
+        """
+            Starts running the Receipe.
+            
+            :param initial_temperature: The initial measured temperature of the tank. Needed for interpolation with the first STEP.
+            :type initial_temperature: int
+            
+            .. note:: For safety reasons, a STOP step with a temperature of 0 is always added at the end of every receipe in order to make sure that we stop the heaters.
+        """
         self.__receipe_list.insert(0,new Step("Initial temperature",LEVEL, initial_temperature)
-        self.__cursor=1 # Begining with a transition that needs an initial temperature and a target temperature for interpolation
-        self.__receipe_list.append(new Step("Receipe ended",STOP))
+        self.__receipe_list.append(new Step("Receipe ended",STOP,0))
+        self.__cursor=1 # Begining with a TRANSITION that needs an initial temperature and a target temperature for interpolation
 
-    def get_current_order(self):
+
+
+    def get_current_temperature_instruction(self):
+        """
+            Returns the current temperature instruction, according to the receipe.
+            
+            :return: The current temperature instruction, in degrees Celcius
+            :rtype: int
+        """
         if(self.__receipe_list[self.__cursor].get_type()==TRANSITION) return (self.__receipe_list[self.__cursor].interpolation(self.__receipe_list[self.__cursor-1].get_temperature(), self.__timer,self.__receipe_list[self.__cursor-+].get_temperature(), datetime.datetime.now())
         else return self.__receipe_list[self.__cursor].get_temperature()
 
-    def update_step(self,current_temperature): #Function to be called every seconds in order to update the current step
+
+    def update_step(self):
+        """
+            This function is making sure that we change the current Steps accordingly to the Receipe. Function to be called regularily (every second for instance) in order to update the current step
+        """
         if(self.get_current_step(self).get_type()!=STOP):
             if(self.__timer==None):
                 self.__timer=datetime.datetime.now() #We start the timer by storing the begining date & time
@@ -153,7 +195,11 @@ class Receipe:
                 self.__timer=None
                 self.__cursor++
 
+
     def user_force_next_step(self):
+        """
+            This function allows the user to skip to the next Step. It is the only way to pass through a STOP Step.
+        """
         if(self.__cursor<len(self.__receipe_list)):
             self.__cursor++
             self.__timer=None
