@@ -25,12 +25,11 @@ class Brewer:
 
 
     def add_thermometer(self, a_thermometer):
-         """
+        """
             Add a thermometer to the Brewer
             :param a_thermometer: Ready to use Thermometer object
             :type a_thermometer: Thermometer
-
-            .. todo:: Shouldn't thermometer and heaters be located in the tank instead ?
+            .. todo:: Shouldn t thermometer and heaters be located in the tank instead ?
         """
         self.__thermometers.append(a_thermometer)
       
@@ -40,7 +39,6 @@ class Brewer:
             Add a heater to the Brewer
             :param a_heater: Ready to use Heater object
             :type a_heater: Heater
-
             .. todo:: Shouldn't thermometer and heaters be located in the tank instead ?
         """
         self.__heaters.append(a_heater)
