@@ -59,9 +59,9 @@ class Ingredient:
             :rtype: String
         """
         to_print="Name : "+self.__name
-        if(self.__step_type==WATER):
+        if(self.__ingredient_type==WATER):
             to_print+=" Type : Water"
-        elif(self.__step_type==GRAIN):
+        elif(self.__ingredient_type==GRAIN):
             to_print+=" Type : Grain"
         to_print+=" Quantity : "+str(self.__quantity)+"\n"
         return to_print

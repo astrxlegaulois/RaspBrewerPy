@@ -1,8 +1,11 @@
-import Brewer
-import Receipe
-import Step
 
+import datetime
+from brewer import Brewer
+from receipe import Receipe
+from globalthings import *
+from step import Step
 
+print "Test begging"
 mon_step1=Step("monStep",TRANSITION,10)
 mon_step2=Step("monStep2",LEVEL,60,67)
 mon_step3=Step("monStep3",TRANSITION,10)
@@ -49,3 +52,5 @@ ma_receipe.get_current_temperature_instruction()
 loaded_receipe=Receipe("ah ah ah")
 loaded_receipe.config_from_file("./receipes/Bonnambr2_2016_03.xml")
 loaded_receipe.print_self()
+
+sys.stdin.read()

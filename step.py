@@ -1,10 +1,12 @@
+from globalthings import *
+
 class Step:
     """
         A Step is a componnent of a Receipe. It can be a TRANSITION, LEVEL or STOP to pause the receipe until user confirmation
     """
     
     
-    def __init__(self, a_name, a_type, a_duration, a_temperature=0):
+    def __init__(self, a_name, a_type, a_duration, a_temperature=0.0):
         """
             Constructor
             :param a_name: Name of the Step
@@ -14,7 +16,7 @@ class Step:
             :type a_name: String
             :type a_type: int LEVEL,TRANSITION or STOP
             :type a_duration: unsigned int
-            :type a_temperature: int
+            :type a_temperature: float
             
             :Exemple:
             >>> Step("Alpha proteines conversion Step", LEVEL, 35, 62)
@@ -79,13 +81,13 @@ class Step:
             :param start_time: Time at the beggining of the TRANSITION Step
             :param stop_temperature: Next Step's start temperature in degrees Celcius
             :param current_time: Time now
-            :type start_temperature: int
+            :type start_temperature: float
             :type start_time: Python's dateTime
-            :type stop_temperature: int
+            :type stop_temperature: float
             :type current_time: Python's dateTime
             
             :return: Current target temperature based on linear interpolation
-            :rtype: int
+            :rtype: float
             
             .. note:: This is coded within the class Steps so that one day we can code different continiuous transitions depending of a new parameter of this Step
         """
@@ -103,8 +105,8 @@ class Step:
         """
         to_print="Name : "+self.__name
         if(self.__step_type==TRANSITION):to_print+=" Type : TRANSITION"
-        if(self.__step_type==LEVEL):to_print+=" Type : LEVEL"
-        if(self.__step_type==STOP):to_print+=" Type : STOP"
+        elif(self.__step_type==LEVEL):to_print+=" Type : LEVEL"
+        elif(self.__step_type==STOP):to_print+=" Type : STOP"
         to_print+=" Target temperature : "+str(self.__temperature)
         to_print+=" Duration : "+str(self.__duration)+"\n"
         return to_print

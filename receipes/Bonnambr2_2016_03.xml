@@ -3,7 +3,7 @@
     <receipe name="Bonambr#2">
         <step name="Montéee initiale" type="TRANSITION" duration="10" index="1"/>
         <step name="Extraction des enzymes" type="LEVEL" duration="30" temperature="50" index="2"/>
-        <step name="Montée initiale" type="TRANSITION" duration="10" index="3"/>
+        <step name="Montée post-enzymale" type="TRANSITION" duration="10" index="3"/>
         <step name="Conversion de l'amidon par les alpha" type="LEVEL" duration="30" temperature="63" index="4"/>
         <step name="Montée amidon" type="TRANSITION" duration="3" index="5"/>
         <step name="Conversion de l'amidon par les bétas" type="LEVEL" duration="35" temperature="67" index="6"/>

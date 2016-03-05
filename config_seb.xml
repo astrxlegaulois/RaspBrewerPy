@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <config>
     <brewer name="Seb le Brasseur">
-        <receipe>./receipes/Bonnambr#2_2016_03.xml</receipe>
-        <tank name="Popote à Seb" diameter="40">
+        <receipe>./receipes/Bonnambr2_2016_03.xml</receipe>
+        <tank name="Popote à Seb" diameter="40" drivetype="BOOLEAN">
             <equipments>
                 <thermometer name="Thermomètre cuve">
-                    <path>/sys/bus/w1/deveices/420000002/w2_slave</path>
+                    <path>./tank_thermo.tmp</path>
                 </thermometer>
                 <heater name="Petit chauffage" power="1000" GPIOpin="12"/>
                 <heater name="Gros chauffage" power="2500" GPIOpin="14"/>
             </equipments>
             <ingredients>
-                <ingredient name="Malt Munich" type="Malt" quantity="0.5"/>
-                <ingredient name="Malt Abbaye" type="Malt" quantity="1.5"/>
-                <ingredient name="Eau de source" type="Water" quantity="8"/>
+                <ingredient name="Malt Munich" type="Grain" quantity="0.5"/>
+                <ingredient name="Malt Abbaye" type="Grain" quantity="1.5"/>
+                <ingredient name="Eau de source" type="Water" quantity="8.0"/>
             </ingredients>
         </tank>
         <outsidethermometer name="Sonde externe">
-            <path>/sys/bus/w1/deveices/420000001/w1_slave</path>
+            <path>./outside_thermo.tmp</path>
         </outsidethermometer>
     </brewer>
 </config>

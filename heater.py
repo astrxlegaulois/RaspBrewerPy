@@ -1,7 +1,7 @@
 """
-    pip install RPi.GPIO needed in order to drive the heater
+    pip install RPi.GPIO and running this code from raspberry pi needed in order to drive the heater
 """
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 
 class Heater:
     """
@@ -20,23 +20,23 @@ class Heater:
         """
         self.__name = a_name
         self.__power = a_power
-        self.__GPIO_pin = a_pin
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(a_pin, GPIO.OUT, initial=GPIO.LOW)
+        #self.__GPIO_pin = a_pin
+        #GPIO.setmode(GPIO.BOARD)
+        #GPIO.setup(a_pin, GPIO.OUT, initial=GPIO.LOW)
      
       
     def activate(self):
         """
             Activates the Heater
         """
-        GPIO.output(a_pin, GPIO.HIGH)
+        #GPIO.output(a_pin, GPIO.HIGH)
 
 
     def deactivate(self):
         """
             Deactivate the Heater
         """
-        GPIO.output(a_pin, GPIO.LOW)
+        #GPIO.output(a_pin, GPIO.LOW)
  
  
     def get_state(self):
@@ -46,7 +46,7 @@ class Heater:
             :return: Current state of the heater
             :rtype: Boolean
         """
-        return GPIO.input(a_pin)   
+        #return GPIO.input(a_pin)   
     
 
     def get_name(self):
@@ -57,3 +57,17 @@ class Heater:
             :rtype: Sting
         """
         return self.__name
+
+
+    def print_self(self):
+        """
+            Returns the Heater as a human readable String
+            
+            :return: A String detailling the caracteristics of the heater
+            :rtype: String
+        """
+        to_print="Name : "+self.__name
+        to_print+=" Power: "+str(self.__power)
+        #to_print+=" GPIO pin : "+str(self.__GPIO_pin)
+        #to_print+=" State : "+str(self.get_state())+"\n"
+        return to_print

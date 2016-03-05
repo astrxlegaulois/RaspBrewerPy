@@ -2,17 +2,11 @@
     pip install beautifulsoup4 needed in order to parse the xml
 """
 
-"""
-    Possible type values for a transition. Global variables
-"""
-LEVEL = 2
-TRANSITION = 1
-STOP = 0
-
 import datetime
 from bs4 import BeautifulSoup
 
-import Step
+from globalthings import *
+from step import Step
 
 class Receipe:
     """
@@ -57,7 +51,7 @@ class Receipe:
                     if(found_steps[i].get('temperature')==None):
                         n_temperature=None
                     else:
-                        n_temperature=found_steps[i].get('temperature')
+                        n_temperature=float(found_steps[i].get('temperature'))
                     self.add_step(Step(n_name,n_type,n_duration,n_temperature))
                     break
         return self.__name
@@ -118,18 +112,23 @@ class Receipe:
 
     def get_current_step(self):
         """
-            Returns the currently performed Step.
+            Returns the currently being performed Step.
             
-            :return: The current Step
-            :rtype: Step
+            :return: The current Step or None is the receipe is over
+            :rtype: Step or None
         """
-        return self.__receipe_list[self.__cursor]
+        if(self.__cursor>=len(self.__receipe_list)):
+            return None
+        else:
+            return self.__receipe_list[self.__cursor]
 
 
     def update_step(self):
         """
             This function is making sure that we change the current Steps accordingly to the Receipe. Function to be called regularily (every second for instance) in order to update the current step
         """
+        if(self.__cursor>=len(self.__receipe_list)):
+            return None
         if(self.get_current_step().get_type()!=STOP):
             if(self.__timer==None):
                 self.__timer=datetime.datetime.now() #We start the timer by storing the begining date & time

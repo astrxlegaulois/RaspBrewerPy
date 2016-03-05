@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Thermometer:
     """
         A thermometer is the object representing one the physical thermometers of the system
@@ -31,12 +33,26 @@ class Thermometer:
             Read the current temperature value
             
             :return: Themperature in °C
-            :rtype: Int
+            :rtype: float
         """
-        tempfile = open(__path)
+        tempfile = open(self.__path)
         text=tempfile.read()
         tempfile.close()
         tempdata=text.split("\n")[1].split(" ")[9]
         temperature=float(tempdata[2:])
         temperature=temperature/1000
-        return temperature
+        return float(temperature)
+
+
+    def print_self(self):
+        """
+            Returns the Heater as a human readable String
+            
+            :return: A String detailling the caracteristics of the heater
+            :rtype: String
+        """
+        to_print="Name : "+self.__name
+        to_print+=" Path: "+str(self.__path)
+        to_print+=" Current Temperature : "+str(self.read_temperature())+"\n"
+        return to_print
+
