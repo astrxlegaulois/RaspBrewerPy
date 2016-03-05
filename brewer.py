@@ -1,3 +1,6 @@
+"""
+    pip install beautifulsoup4 needed in order to parse the xml
+"""
 from bs4 import BeautifulSoup
 
 class Brewer:
