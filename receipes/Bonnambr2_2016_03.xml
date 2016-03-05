@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<config>
+    <receipe name="Bonambr#2">
+        <step name="Montéee initiale" type="TRANSITION" duration="10" index="1"/>
+        <step name="Extraction des enzymes" type="LEVEL" duration="30" temperature="50" index="2"/>
+        <step name="Montée initiale" type="TRANSITION" duration="10" index="3"/>
+        <step name="Conversion de l'amidon par les alpha" type="LEVEL" duration="30" temperature="63" index="4"/>
+        <step name="Montée amidon" type="TRANSITION" duration="3" index="5"/>
+        <step name="Conversion de l'amidon par les bétas" type="LEVEL" duration="35" temperature="67" index="6"/>
+        <step name="Vérification de l'absence d'amidon résiduel" type="STOP" duration="1" temperature="67" index="7"/>
+        <step name="Montée suppression des protéines" type="TRANSITION" duration="5" index="8"/>
+        <step name="Désactivation des protéines" type="LEVEL" duration="10" temperature="80" index="9"/>
+        <step name="Montée ébullition" type="TRANSITION" duration="5" index="10"/>
+        <step name="Ajout de Houblon amérisant" type="STOP" duration="1" temperature="100" index="11"/>
+        <step name="Diffusion des résines amérisantes" type="LEVEL" duration="20" temperature="100" index="12"/>
+        <step name="Ajout de Houblon aromatique" type="STOP" duration="1" temperature="100" index="13"/>
+        <step name="Diffusion des résines aromatiques" type="LEVEL" duration="7" temperature="100" index="14"/>
+    </receipe>
+</config>
