@@ -6,6 +6,8 @@ TRANSITION = 1
 STOP = 0
 
 import datetime
+from bs4 import BeautifulSoup
+
 
 class Step:
     """
@@ -34,9 +36,9 @@ class Step:
         """
         self.__name = a_name
         self.__step_type = a_type
-        self.__temperature = a_temperature
         self.__duration = a_duration
         if(self.__duration==0):self.__duration+=1
+        self.__temperature = a_temperature
 
 
     def get_name(self):
@@ -101,6 +103,7 @@ class Step:
         delta_time=current_time-start_time
         return start_temperature+delta_th*(delta_time.total_seconds()/(self.__duration*60))
 
+
     def print_self(self):
         """
             Returns the Step as a human readable String ended with a new line
@@ -133,6 +136,22 @@ class Receipe:
         self.__receipe_list=[]
         self.__cursor=None
         self.__timer=None
+
+
+    def config_from_file(self, a_path):
+        """
+            Creates the Steps according to the selected receipe file
+            :param a_path: path and name of the receipe
+            :type a_path: String
+        """
+        with open(a_path) as f:
+            content = f.read()
+        y = BeautifulSoup(content,"xml")
+        self.__name = y.receipe['name']
+        for step_i in y.receipe:
+            print(step_i['name'])
+        self.__outside_thermometer = Thermometer(y.brewer.outsidethermometer['name'],y.brewer.outsidethermometer.path.contents[0])   
+        return self.__name
 
 
     def add_step(self, a_step):

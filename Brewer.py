@@ -1,48 +1,48 @@
+from bs4 import BeautifulSoup
+
 class Brewer:
     """
         A brewer uses the thermometers and heaters in order to follow the receipe. Each brewer has a single tank who knows its own composition in order to perform kick-ass calculations'
     """
 
-
-    def __init__(self, a_name, a_receipe, a_tank):
+    def __init__(self):
         """
             Constructor
-            :param a_name: Name of the brewer
-            :param a_receipe: Fully feathured receipe to be started right now!
-            :param a_tank: A tank to brew in
-            :type a_name: String
-            :type a_receipe: Receipe
-            :type a_tank: Tank
-                     
-            .. warnings:: This function is unprotected agains wrong parameters types or values. Use carfully
-            .. todo:: Shouldn't thermometer and heaters be located in the tank instead ?
         """
-        self.__name = a_name
-        self.__receipe = a_receipe
-        self.__tank = a_tank
-        self.__thermometers=[]
-        self.__heaters=[]
+        self.__name = None
+        self.__outside_thermometer = None
+        self.__tank = None
+
+
+    def config_from_file(self, a_path):
+        """
+            Configure the Brewer instantiates elements and populates the tank from the selected config file
+            :param a_path: path and name of the config file
+            :type a_path: String
+        """
+        with open(a_path) as f:
+            content = f.read()
+        y = BeautifulSoup(content,"xml")
+        self.__name = y.brewer['name']
+        #TODO load receipe
+        #TODO create and load Tank
+        """
+            for heater in y.brewer.tank.equipments:
+            print(heater)
+        """
+        self.__outside_thermometer = Thermometer(y.brewer.outsidethermometer['name'],y.brewer.outsidethermometer.path.contents[0])   
+        return self.__name
 
 
     def add_thermometer(self, a_thermometer):
         """
             Add a thermometer to the Brewer
-            :param a_thermometer: Ready to use Thermometer object
+            :param a_thermometer: Ready to use Thermometer object, located outside any tank
             :type a_thermometer: Thermometer
-            .. todo:: Shouldn t thermometer and heaters be located in the tank instead ?
+            .. warning:: Other thermometers may  be located in the tank
         """
-        self.__thermometers.append(a_thermometer)
+        self.__outside_thermometer=a_thermometer
       
-      
-    def add_heater(self, a_heater):
-        """
-            Add a heater to the Brewer
-            :param a_heater: Ready to use Heater object
-            :type a_heater: Heater
-            .. todo:: Shouldn't thermometer and heaters be located in the tank instead ?
-        """
-        self.__heaters.append(a_heater)
-
 
     def get_name(self):
         """
