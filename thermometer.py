@@ -35,7 +35,11 @@ class Thermometer:
             :return: Themperature in °C
             :rtype: float
         """
-        tempfile = open(self.__path)
+	tempfile = open(self.__path)
+        text=tempfile.read()
+        tempfile.close()
+        #due to a driver bug, always perform double reads and take the last value. Probably a buffer issue in the driver...
+	tempfile = open(self.__path)
         text=tempfile.read()
         tempfile.close()
         tempdata=text.split("\n")[1].split(" ")[9]
