@@ -13,7 +13,7 @@ class Heater:
             Constructor
             :param a_name: Name of the Heater
             :param a_power: Power in Watt of the electrical heater
-            :param a_pin: The number of the GPIO pin (BOARD mode) used to drive the heater
+            :param a_pin: The number of the GPIO pin (BCM mode) used to drive the heater
             :type a_name: String
             :type a_power: Int
             :type a_pin: Int
@@ -21,7 +21,7 @@ class Heater:
         self.__name = a_name
         self.__power = a_power
         #self.__GPIO_pin = a_pin
-        #GPIO.setmode(GPIO.BOARD)
+        #GPIO.setmode(GPIO.BCM)
         #GPIO.setup(a_pin, GPIO.OUT, initial=GPIO.LOW)
      
       
@@ -29,14 +29,14 @@ class Heater:
         """
             Activates the Heater
         """
-        #GPIO.output(a_pin, GPIO.HIGH)
+        #GPIO.output(self.__GPIO_pin, GPIO.HIGH)
 
 
     def deactivate(self):
         """
             Deactivate the Heater
         """
-        #GPIO.output(a_pin, GPIO.LOW)
+        #GPIO.output(self.__GPIO_pin, GPIO.LOW)
  
  
     def get_state(self):
@@ -46,7 +46,7 @@ class Heater:
             :return: Current state of the heater
             :rtype: Boolean
         """
-        #return GPIO.input(a_pin)   
+        #return GPIO.input(self.__GPIO_pin)   
     
 
     def get_name(self):

@@ -5,10 +5,9 @@
         <tank name="Popote à Seb" diameter="40" drivetype="BOOLEAN">
             <equipments>
                 <thermometer name="Thermomètre cuve">
-                    <path>./tank_thermo.tmp</path>
+                    <path>/sys/bus/w1/devices/28-8000000119c6/w1_slave</path>
                 </thermometer>
-                <heater name="Petit chauffage" power="1000" GPIOpin="12"/>
-                <heater name="Gros chauffage" power="2500" GPIOpin="14"/>
+                <heater name="Gros chauffage" power="2500" GPIOpin="22"/>
             </equipments>
             <ingredients>
                 <ingredient name="Malt Munich" type="Grain" quantity="0.5"/>
