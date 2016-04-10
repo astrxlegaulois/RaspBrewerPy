@@ -1,5 +1,5 @@
 """
-    pip install beautifulsoup4 needed in order to parse the xml
+    apt-get install python-bs4 needed in order to parse the xml
 """
 from bs4 import BeautifulSoup
 import signal, time, sys
@@ -33,8 +33,10 @@ class Brewer:
             :param a_path: path and name of the config file
             :type a_path: String
         """
-        with open(a_path) as f:
+        print "using path:"+a_path 
+	with open(a_path) as f:
             content = f.read()
+	print "content"+content
         y = BeautifulSoup(content,"xml")
         self.__name = y.brewer['name']
         self.__receipe=Receipe("Fill me !")

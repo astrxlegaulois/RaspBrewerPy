@@ -1,5 +1,6 @@
 """
     pip install RPi.GPIO and running this code from raspberry pi needed in order to drive the heater
+    Needs to be run as root...
 """
 import RPi.GPIO as GPIO
 

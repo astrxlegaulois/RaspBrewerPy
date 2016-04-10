@@ -5,8 +5,8 @@
         <step name="Extraction des enzymes" type="LEVEL" duration="1" temperature="50" index="2"/>
         <step name="Montée post-enzymale" type="TRANSITION" duration="2" index="3"/>
         <step name="Conversion de l'amidon par les alpha" type="LEVEL" duration="1" temperature="63" index="4"/>
-        <step name="Vérification de l'absence d'amidon résiduel" type="STOP" duration="1" temperature="67" index="7"/>
-        <step name="Montée suppression des protéines" type="TRANSITION" duration="3" index="8"/>
-        <step name="Désactivation des protéines" type="LEVEL" duration="1" temperature="80" index="9"/>
+        <step name="Vérification de l'absence d'amidon résiduel" type="STOP" duration="1" temperature="67" index="5"/>
+        <step name="Montée suppression des protéines" type="TRANSITION" duration="3" index="6"/>
+        <step name="Désactivation des protéines" type="LEVEL" duration="1" temperature="80" index="7"/>
     </receipe>
 </config>
