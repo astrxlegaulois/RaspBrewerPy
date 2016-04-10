@@ -89,3 +89,16 @@ class Tank:
                     a_heater.activate()
         #TODO implement PID and PREDICTIVE (based on the content of the tank)
 
+    def get_heating_status(self):
+        """
+            Returns whether or not the heaters are activated
+            :return: the current activation state of each heater as an int made of booleans (bit 0 is activation state of the first heater,...)
+            :rtype: int
+        """
+        retval=0
+	cur_bit=0
+	for heat in self.__heaters:
+            retval+=(a_heater.get_state()<<cur_bit)
+            cur_bit+=1
+        return retval
+

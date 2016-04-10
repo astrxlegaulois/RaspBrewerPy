@@ -36,6 +36,7 @@ class Brewer:
         print "using path:"+a_path 
 	with open(a_path) as f:
             content = f.read()
+	f.close()
 	print "content"+content
         y = BeautifulSoup(content,"xml")
         self.__name = y.brewer['name']
@@ -98,9 +99,22 @@ class Brewer:
         return True
 
 
-    def brew(self):
+    def log_temperatures(self,a_file):
+        """
+            This function logs in the desired output file the temperature state of the system.
+            :param a_file: path and name of the file where all temperature will be reccorded
+            :type a_file: String
+        """
+	f=open(a_file, "w")
+        f.write(datetime.datetime.now().strftime('%H:%M:%S')+"\t"+self.__receipe.get_current_step().get_name()+"\t"+str(self.__receipe.get_current_temperature_instruction())+"\t"+str(self.__tank.get_current_temperature())+"\t"+str(self.__tank.get_heating_status())+"\n")
+        f.close()
+
+
+    def brew(self,a_outputfile):
         """
             This function is the main brewing function : ajusting the temperature according to the receipe. Function to be called regularily (every 5 seconds for instance).
+            :param a_outputfile: path and name of the file where all temperature will be reccorded
+            :type a_outputfile: String
         """
         while 1==1 :
             self.__receipe.update_step()
@@ -111,7 +125,7 @@ class Brewer:
             print "Current step : "+self.__receipe.get_current_step().print_self()
             print "Temperature instuction : "+str(self.__receipe.get_current_temperature_instruction())
             print "Current temperature : "+str(self.__tank.get_current_temperature())
- 
+            self.log_temperatues(a_outputfile)
             print 'Type "N" if you want to skip the current step',
             rlist, _, _ = select([sys.stdin], [], [], UPDATE_PERIOD)
             if rlist:
