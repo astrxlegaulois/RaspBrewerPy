@@ -2,7 +2,7 @@
     apt-get install python-bs4 needed in order to parse the xml
 """
 from bs4 import BeautifulSoup
-import signal, time, sys
+import unicodedata, signal, time, sys, datetime
 from select import select
 
 from receipe import Receipe
@@ -105,8 +105,8 @@ class Brewer:
             :param a_file: path and name of the file where all temperature will be reccorded
             :type a_file: String
         """
-	f=open(a_file, "w")
-        f.write(datetime.datetime.now().strftime('%H:%M:%S')+"\t"+self.__receipe.get_current_step().get_name()+"\t"+str(self.__receipe.get_current_temperature_instruction())+"\t"+str(self.__tank.get_current_temperature())+"\t"+str(self.__tank.get_heating_status())+"\n")
+	f=open(a_file, "a")
+	f.write(str(datetime.datetime.now().strftime('%H:%M:%S'))+"\t"+unicodedata.normalize('NFKD',self.__receipe.get_current_step().get_name()).encode('ascii','ignore')+"\t"+str(self.__receipe.get_current_temperature_instruction())+"\t"+str(self.__tank.get_current_temperature())+"\t"+str(self.__tank.get_heating_status())+"\n")
         f.close()
 
 
@@ -125,7 +125,7 @@ class Brewer:
             print "Current step : "+self.__receipe.get_current_step().print_self()
             print "Temperature instuction : "+str(self.__receipe.get_current_temperature_instruction())
             print "Current temperature : "+str(self.__tank.get_current_temperature())
-            self.log_temperatues(a_outputfile)
+            self.log_temperatures(a_outputfile)
             print 'Type "N" if you want to skip the current step',
             rlist, _, _ = select([sys.stdin], [], [], UPDATE_PERIOD)
             if rlist:

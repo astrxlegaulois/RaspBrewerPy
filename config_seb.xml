@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <config>
     <brewer name="Seb le Brasseur">
-        <receipe>./receipes/test.xml</receipe>
+        <receipe>./receipes/Bonnambr2_2016_03.xml</receipe>
         <tank name="Popote à Seb" diameter="40" drivetype="BOOLEAN">
             <equipments>
                 <thermometer name="Thermomètre cuve">

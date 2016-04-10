@@ -97,7 +97,7 @@ class Tank:
         """
         retval=0
 	cur_bit=0
-	for heat in self.__heaters:
+	for a_heater in self.__heaters:
             retval+=(a_heater.get_state()<<cur_bit)
             cur_bit+=1
         return retval

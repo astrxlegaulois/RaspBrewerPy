@@ -22,9 +22,8 @@ if __name__ == "__main__":
         elif opt in ("-c", "--cfile"):
             configfile = arg
         elif opt in ("-o", "--ofile"):
-            outputfile = arg
-	else:
-            outputfile = outputfileprefix+str(datetime.datetime.now().strftime('%Y-%m-%d_%H:%M'))
+            outputfileprefix = arg
+    outputfile = outputfileprefix+str(datetime.datetime.now().strftime('%Y-%m-%d_%H:%M'))
     print 'Config file is "',configfile,'"'
     print 'Output file is "',outputfile,'"'
     the_brewer=Brewer()
