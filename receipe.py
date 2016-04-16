@@ -117,13 +117,14 @@ class Receipe:
             :return: The temperature instruction of the next non transition step, in degrees Celcius. Or 0 if there is no next step
             :rtype: float
         """
-	if(self.__receipe_list[self.__cursor].get_type()==TRANSITION)
+        if(self.__receipe_list[self.__cursor].get_type()==TRANSITION):
             if(self.__cursor+1<len(self.__receipe_list)):
-                self.__receipe_list[self.__cursor+1].get_temperature()
-	    else:
-	        return 0
-         else:
-            self.__receipe_list[self.__cursor].get_temperature()
+                return self.__receipe_list[self.__cursor+1].get_temperature()
+            else:
+                print "next_temp_instruct ERROR : End of receipe"
+                return 0
+        else:
+            return self.__receipe_list[self.__cursor].get_temperature()
 
 
     def get_current_step(self):

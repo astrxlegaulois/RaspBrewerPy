@@ -112,6 +112,7 @@ class Tank:
                     for a_heater in self.__heaters:
                         a_heater.deactivate()
                     print "Inertia overheat protection triggered"
+                    print "next target:"+str(next_target)+"cur_temp"+str(cur_temp)+"INERTIA_TIME"+str(INERTIA_TIME)+"HEATING_SPEED"+str(HEATING_SPEED)
                     return True
                 if(cur_temp>temperature_target):
                     for a_heater in self.__heaters:
