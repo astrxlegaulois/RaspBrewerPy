@@ -23,18 +23,18 @@ class Heater:
         self.__power = a_power
         self.__GPIO_pin = a_pin
         GPIO.setmode(GPIO.BCM)
-	#GPIO.setup(a_pin, GPIO.OUT, initial=GPIO.LOW)
+	GPIO.setup(a_pin, GPIO.OUT, initial=GPIO.LOW)
 	#As the R Pi does only 3.3V, we use the 5V  input pull-up in order to generate the 5V needed to trigger the relay => counter-intuitive init and use...
-        GPIO.setup(self.__GPIO_pin, GPIO.IN) #For safety we initialize the heater at non heating...
+        #GPIO.setup(self.__GPIO_pin, GPIO.IN) #For safety we initialize the heater at non heating...
      
       
     def activate(self):
         """
             Activates the Heater
         """
-        #GPIO.output(self.__GPIO_pin, GPIO.HIGH)
+        GPIO.output(self.__GPIO_pin, GPIO.HIGH)
 	#As the R Pi does only 3.3V, we use the 5V  input pull-up in order to generate the 5V needed to trigger the relay => counter-intuitive init and use...
-        GPIO.setup(self.__GPIO_pin, GPIO.OUT)
+        #GPIO.setup(self.__GPIO_pin, GPIO.OUT)
 	
 
 
@@ -42,9 +42,9 @@ class Heater:
         """
             Deactivate the Heater
         """
-        #GPIO.output(self.__GPIO_pin, GPIO.LOW)
+        GPIO.output(self.__GPIO_pin, GPIO.LOW)
 	#As the R Pi does only 3.3V, we use the 5V  input pull-up in order to generate the 5V needed to trigger the relay => counter-intuitive init and use...
-        GPIO.setup(self.__GPIO_pin, GPIO.IN)
+        #GPIO.setup(self.__GPIO_pin, GPIO.IN)
  
  
     def get_state(self):
@@ -54,9 +54,9 @@ class Heater:
             :return: Current state of the heater
             :rtype: Boolean
         """
-        #return GPIO.input(self.__GPIO_pin)
+        return GPIO.input(self.__GPIO_pin)
 	#As the R Pi does only 3.3V, we use the 5V  input pull-up in order to generate the 5V needed to trigger the relay => counter-intuitive init and use...
-	return not GPIO.gpio_function(self.__GPIO_pin)   
+	#return not GPIO.gpio_function(self.__GPIO_pin)   
     
 
     def get_name(self):

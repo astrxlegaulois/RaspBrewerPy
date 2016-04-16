@@ -21,8 +21,7 @@ WATER = 0
 """
 BOOLEAN = 0
 PID = 1
-PREDICTIVE = 1
-
+PREDICTIVE = 2
 
 """
     Global update period for everything (in seconds) : temperature readouts and heaters status
@@ -32,6 +31,6 @@ UPDATE_PERIOD = 5
 """
     Servo driving constant variables. Hysteresis in degrees Celcius
 """
+HYSTERESIS_UP = 5.0
 HYSTERESIS = 1.0
-
 

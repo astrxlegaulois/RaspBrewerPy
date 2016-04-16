@@ -106,7 +106,10 @@ class Brewer:
             :type a_file: String
         """
 	f=open(a_file, "a")
-	f.write(str(datetime.datetime.now().strftime('%H:%M:%S'))+"\t"+unicodedata.normalize('NFKD',self.__receipe.get_current_step().get_name()).encode('ascii','ignore')+"\t"+str(self.__receipe.get_current_temperature_instruction())+"\t"+str(self.__tank.get_current_temperature())+"\t"+str(self.__tank.get_heating_status())+"\n")
+	try:
+	    f.write(str(datetime.datetime.now().strftime('%H:%M:%S'))+"\t"+unicodedata.normalize('NFKD',self.__receipe.get_current_step().get_name()).encode('ascii','ignore')+"\t"+str(self.__receipe.get_current_temperature_instruction())+"\t"+str(self.__tank.get_current_temperature())+"\t"+str(self.__tank.get_heating_status())+"\n")
+	except:
+            print "Unexpected log write error"
         f.close()
 
 
