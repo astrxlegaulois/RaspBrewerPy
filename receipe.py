@@ -102,12 +102,28 @@ class Receipe:
             Returns the current temperature instruction, according to the receipe.
             
             :return: The current temperature instruction, in degrees Celcius
-            :rtype: int
+            :rtype: float
         """
         if(self.__receipe_list[self.__cursor].get_type()==TRANSITION):
-			return (self.__receipe_list[self.__cursor].interpolation(self.__receipe_list[self.__cursor-1].get_temperature(), self.__timer,self.__receipe_list[self.__cursor+1].get_temperature(), datetime.datetime.now()))
+	    return (self.__receipe_list[self.__cursor].interpolation(self.__receipe_list[self.__cursor-1].get_temperature(), self.__timer,self.__receipe_list[self.__cursor+1].get_temperature(), datetime.datetime.now()))
         else:
-			return self.__receipe_list[self.__cursor].get_temperature()
+	    return self.__receipe_list[self.__cursor].get_temperature()
+
+
+    def get_next_temperature_instruction(self):
+        """
+            Returns the next non transition Step's temperature instruction, according to the receipe. If current step is a non transition, the current temperature instruction is returned
+            
+            :return: The temperature instruction of the next non transition step, in degrees Celcius. Or 0 if there is no next step
+            :rtype: float
+        """
+	if(self.__receipe_list[self.__cursor].get_type()==TRANSITION)
+            if(self.__cursor+1<len(self.__receipe_list)):
+                self.__receipe_list[self.__cursor+1].get_temperature()
+	    else:
+	        return 0
+         else:
+            self.__receipe_list[self.__cursor].get_temperature()
 
 
     def get_current_step(self):

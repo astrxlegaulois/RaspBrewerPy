@@ -29,8 +29,9 @@ PREDICTIVE = 2
 UPDATE_PERIOD = 5
 
 """
-    Servo driving constant variables. Hysteresis in degrees Celcius
+    Servo driving constant variables. Seconds, degrees/seconds, degrees Celcius
 """
-HYSTERESIS_UP = 5.0
+INERTIA_TIME = 50
+HEATING_SPEED = 0.09
 HYSTERESIS = 1.0
 

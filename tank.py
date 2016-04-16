@@ -74,11 +74,11 @@ class Tank:
         return self.__thermometer.read_temperature()
 
 
-    def temperature_drive(self, temperature_target):
+    def temperature_hysteresis_drive(self, temperature_target):
         """
             Drives the heaters in order to follow the temperature target
             :param temperature_target: The current desired temperature for the tank
-            :type a_heater: float
+            :type temperature_targe: float 
         """
         if(self.__drive_type==BOOLEAN):
             if(self.__thermometer.read_temperature()>temperature_target+HYSTERESIS):
@@ -88,6 +88,38 @@ class Tank:
                 for a_heater in self.__heaters:
                     a_heater.activate()
         #TODO implement PID and PREDICTIVE (based on the content of the tank)
+
+    
+    def temperature_inertia_drive(self, temperature_target, next_target):
+        """
+            Drives the heaters in order to follow the temperature target
+            :param temperature_target: The current desired temperature for the tank
+            :param next_target: The desired temperature for the tank for the next level step
+            :type temperature_targe: float 
+            :type next_target: float 
+        """
+        cur_temp=self.__thermometer.read_temperature()
+        if(self.__drive_type==BOOLEAN):
+            if(temperature_target==next_target):                            #currently doing a LEVEL or STOP...           
+                if(cur_temp>temperature_target):
+                    for a_heater in self.__heaters:
+                        a_heater.deactivate()
+                elif(cur_temp<temperature_target-HYSTERESIS):
+                    for a_heater in self.__heaters:
+                        a_heater.activate()
+            else:                                                           #currently doing a TRANSITION...
+                if(cur_temp+INERTIA_TIME*HEATING_SPEED>next_target):
+                    for a_heater in self.__heaters:
+                        a_heater.deactivate()
+                    print "Inertia overheat protection triggered"
+                    return True
+                if(cur_temp>temperature_target):
+                    for a_heater in self.__heaters:
+                        a_heater.deactivate()
+                elif(cur_temp<temperature_target-HYSTERESIS):
+                    for a_heater in self.__heaters:
+                        a_heater.activate()
+
 
     def get_heating_status(self):
         """

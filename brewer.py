@@ -124,9 +124,11 @@ class Brewer:
             if(self.__receipe.get_current_step()==None):
                 print "Receipe completed"
                 return True
-            self.__tank.temperature_drive(self.__receipe.get_current_temperature_instruction())
+            #self.__tank.temperature_hysteresis_drive(self.__receipe.get_current_temperature_instruction())
+            self.__tank.temperature_inertia_drive(self.__receipe.get_current_temperature_instruction(), self.__receipe.get_next_temperature_instruction())
             print "Current step : "+self.__receipe.get_current_step().print_self()
             print "Temperature instuction : "+str(self.__receipe.get_current_temperature_instruction())
+            print "Next Temperature instuction : "+str(self.__receipe.get_current_temperature_instruction())
             print "Current temperature : "+str(self.__tank.get_current_temperature())
             self.log_temperatures(a_outputfile)
             print 'Type "N" if you want to skip the current step',
