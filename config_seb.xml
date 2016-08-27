@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <config>
     <brewer name="Seb le Brasseur">
-        <receipe>./receipes/Bonnambr2_2016_03.xml</receipe>
+        <receipe>./receipes/Brume2_2016_08.xml</receipe>
         <tank name="Popote à Seb" diameter="40" drivetype="BOOLEAN">
             <equipments>
                 <thermometer name="Thermomètre cuve">
@@ -10,7 +10,7 @@
                 <heater name="Gros chauffage" power="2500" GPIOpin="22"/>
             </equipments>
             <ingredients>
-                <ingredient name="Malt Abbaye" type="Grain" quantity="1.5"/>
+                <ingredient name="Malt" type="Grain" quantity="1.5"/>
                 <ingredient name="Eau de source" type="Water" quantity="9.0"/>
             </ingredients>
         </tank>
