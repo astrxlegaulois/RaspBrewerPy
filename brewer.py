@@ -121,11 +121,15 @@ class Brewer:
         """
         while 1==1 :
             self.__receipe.update_step()
+            if(self.__receipe.get_current_step().get_type()==TRANSITION):
+				if(self.__tank.get_current_temperature()>=self.__receipe.get_next_temperature_instruction()): #Only works as long as transitions go from lower to higher temperatures...
+					self.__receipe.transition_complete()
             if(self.__receipe.get_current_step()==None):
                 print "Receipe completed"
                 return True
             #self.__tank.temperature_hysteresis_drive(self.__receipe.get_current_temperature_instruction())
-            self.__tank.temperature_inertia_drive(self.__receipe.get_current_temperature_instruction(), self.__receipe.get_next_temperature_instruction())
+            #self.__tank.temperature_inertia_drive(self.__receipe.get_current_temperature_instruction(), self.__receipe.get_next_temperature_instruction())
+            self.__tank.temperature_model_drive(self.__receipe.get_current_temperature_instruction(), self.__receipe.get_next_temperature_instruction(),self.__outside_thermometer.get_current_temperature())
             print "Current step : "+self.__receipe.get_current_step().print_self()
             print "Temperature instuction : "+str(self.__receipe.get_current_temperature_instruction())
             print "Next Temperature instuction : "+str(self.__receipe.get_current_temperature_instruction())

@@ -22,6 +22,9 @@ class Tank:
         self.__diameter= a_diameter
         self.__thermometer= a_thermometer
         self.__drive_type=a_drive_type
+        self.__current_transition_energy_need=0
+        self.__current_transition_energy_done=0
+        self.__last_temp=self.__thermometer.read_temperature()
         self.__heaters = []
         self.__ingredients = []
     
@@ -78,7 +81,7 @@ class Tank:
         """
             Drives the heaters in order to follow the temperature target
             :param temperature_target: The current desired temperature for the tank
-            :type temperature_targe: float 
+            :type temperature_target: float 
         """
         if(self.__drive_type==BOOLEAN):
             if(self.__thermometer.read_temperature()>temperature_target+HYSTERESIS):
@@ -87,7 +90,35 @@ class Tank:
             elif(self.__thermometer.read_temperature()<temperature_target-HYSTERESIS):
                 for a_heater in self.__heaters:
                     a_heater.activate()
-        #TODO implement PID and PREDICTIVE (based on the content of the tank)
+
+	def sum_of_squares(n):
+		"""
+            Computes the sum of the squares up to n
+            :param n: the sum limit
+            :return: the sum
+            :rtype: int
+        """
+		return ((2*n)*(n+1)*n)/6
+
+	def compute_nrj(ini_temperature,final_temperature,external_temperature):
+		"""
+            Computes the required energy in order to perform a transition
+            :param ini_temperature: The initial temperature
+            :param final_temperature: The desired temperature
+            :param external_temperature: The external temperature
+            :type ini_temperature: float 
+            :type final_temperature: float 
+            :type external_temperature: float 
+            :return: the energy needed in Joules
+            :rtype: float
+		"""
+		if(ini_temperature>final_temperature):
+			return 0
+		# heat losses estimation
+		heating_time=(final_temperature-ini_temperature)/(HEATER_EFFECT)
+		losses=HEAT_PROPORTIONNAL_LEAKS*((final_temperature+ini_temperature)/2-external_temperature)*heating_time #terrible aproximation. Integrals should be used. TODO just after passing all model constants en per-second.
+		losses+=HEAT_SQUARE_LEAKS*((final_temperature+ini_temperature)*3/4-external_temperature)*heating_time#terrible aproximation. Integrals should be used. TODO just after passing all model constants en per-second.
+		return losses+9.5*CALOR_WATER*(final_temperature-ini_temperature) #9.5 = 8Lwater + 1.5L malt TODO 9.5 variable
 
     
     def temperature_inertia_drive(self, temperature_target, next_target):
@@ -122,6 +153,39 @@ class Tank:
                         a_heater.activate()
 
 
+    def temperature_model_drive(self, temperature_target, next_target, external_temperature):
+        """
+            Drives the heaters in order to follow the temperature target
+            :param temperature_target: The current desired temperature for the tank
+            :param next_target: The desired temperature for the tank for the next level step
+            :param external_temperature: The outside temperature
+            :type temperature_target: float 
+            :type next_target: float 
+            :type external_temperature: float 
+        """
+        cur_temp=self.__thermometer.read_temperature()
+        if(self.__drive_type==BOOLEAN):
+            if(temperature_target==next_target):                            #currently doing a LEVEL or STOP...           
+                if(cur_temp>temperature_target):
+                    for a_heater in self.__heaters:
+                        a_heater.deactivate()
+                elif(cur_temp<temperature_target-HYSTERESIS):
+                    for a_heater in self.__heaters:
+                        a_heater.activate()
+            else:                                                           #currently doing a TRANSITION...
+				if (self.__current_transition_energy_need==0):
+					self.__current_transition_energy_need=compute_nrj(cur_temp,next_target,external_temperature)
+					self.__current_transition_energy_done=0
+				if((cur_temp<next_target) and (self.__last_temp<=cur_temp) and (self.__current_transition_energy_done>=self.__current_transition_energy_need)):  #target not reached using model, heating until temp reached...
+					for a_heater in self.__heaters:
+						a_heater.deactivate()						
+				else:
+					for a_heater in self.__heaters:
+						a_heater.activate()
+						self.__current_transition_energy_done=+HEATER_EFF*a_heater.get_power()*UPDATE_PERIOD
+				print "heating done:"+self.__current_transition_energy_done+" of :"+self.__current_transition_energy_need
+        self.__last_temp=cur_temp
+
     def get_heating_status(self):
         """
             Returns whether or not the heaters are activated
@@ -134,4 +198,3 @@ class Tank:
             retval+=(a_heater.get_state()<<cur_bit)
             cur_bit+=1
         return retval
-

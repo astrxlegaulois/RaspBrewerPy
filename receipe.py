@@ -138,33 +138,41 @@ class Receipe:
             return None
         else:
             return self.__receipe_list[self.__cursor]
-
+            
+    def goto_next_step(self):
+        """
+            This function is called when it is needed to go to the next step.
+        """
+        if(self.__cursor<len(self.__receipe_list)):
+            self.__cursor+=1
+            self.__timer==datetime.datetime.now() #We restart the timer by storing the begining date & time for the new step  
 
     def update_step(self):
         """
             This function is making sure that we change the current Steps accordingly to the Receipe. Function to be called regularily (every second for instance) in order to update the current step
         """
         print "self.__cursor"+str(self.__cursor)+"list_len:"+str(len(self.__receipe_list))
-	if(self.__cursor>=len(self.__receipe_list)):
+        if(self.__cursor>=len(self.__receipe_list)):
             return None
-        if(self.get_current_step().get_type()!=STOP):
+        if(self.get_current_step().get_type()==LEVEL):
             if(self.__timer==None):
                 self.__timer=datetime.datetime.now() #We start the timer by storing the begining date & time
             print "step begining time:"+str(self.__timer)+"now is :"+str(datetime.datetime.now())
             if(((datetime.datetime.now()-self.__timer).total_seconds()//60)>=self.get_current_step().get_duration()):
-                self.__timer=datetime.datetime.now() #We restart the timer by storing the begining date & time for the new step
-                self.__cursor+=1
-
+                self.goto_next_step()
 
     def user_force_next_step(self):
         """
             This function allows the user to skip to the next Step. It is the only way to pass through a STOP Step.
         """
-        if(self.__cursor<len(self.__receipe_list)):
-            self.__cursor+=1
-            self.__timer==datetime.datetime.now() #We restart the timer by storing the begining date & time for the new step
-    
-    
+        self.goto_next_step()
+            
+    def transition_complete(self):
+        """
+            This function is called when the temperature reached the target. It is the normal way to pass through a TRANSITION Step.
+        """
+        self.goto_next_step()
+
     def print_self(self):
         """
             Returns the Receipe as a human readable String ended with a new line

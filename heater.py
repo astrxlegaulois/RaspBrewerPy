@@ -61,13 +61,21 @@ class Heater:
 
     def get_name(self):
         """
-            Returns the name of the Brewer
+            Returns the name of the Heater
             
-            :return: Name of the Brewer
+            :return: Name of the Heater
             :rtype: Sting
         """
         return self.__name
 
+    def get_power(self):
+        """
+            Returns the power of the Heater
+            
+            :return: Power of the Heater
+            :rtype: Int
+        """
+        return self.__power
 
     def print_self(self):
         """
