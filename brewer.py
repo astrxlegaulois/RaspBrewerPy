@@ -129,7 +129,7 @@ class Brewer:
                 return True
             #self.__tank.temperature_hysteresis_drive(self.__receipe.get_current_temperature_instruction())
             #self.__tank.temperature_inertia_drive(self.__receipe.get_current_temperature_instruction(), self.__receipe.get_next_temperature_instruction())
-            self.__tank.temperature_model_drive(self.__receipe.get_current_temperature_instruction(), self.__receipe.get_next_temperature_instruction(),self.__outside_thermometer.get_current_temperature())
+            self.__tank.temperature_model_drive(self.__receipe.get_current_temperature_instruction(), self.__receipe.get_next_temperature_instruction(),self.__outside_thermometer.read_temperature())
             print "Current step : "+self.__receipe.get_current_step().print_self()
             print "Temperature instuction : "+str(self.__receipe.get_current_temperature_instruction())
             print "Next Temperature instuction : "+str(self.__receipe.get_current_temperature_instruction())

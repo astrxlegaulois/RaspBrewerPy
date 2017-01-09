@@ -154,12 +154,11 @@ class Receipe:
         print "self.__cursor"+str(self.__cursor)+"list_len:"+str(len(self.__receipe_list))
         if(self.__cursor>=len(self.__receipe_list)):
             return None
-        if(self.get_current_step().get_type()==LEVEL):
-            if(self.__timer==None):
-                self.__timer=datetime.datetime.now() #We start the timer by storing the begining date & time
-            print "step begining time:"+str(self.__timer)+"now is :"+str(datetime.datetime.now())
-            if(((datetime.datetime.now()-self.__timer).total_seconds()//60)>=self.get_current_step().get_duration()):
-                self.goto_next_step()
+        if(self.__timer==None):
+            self.__timer=datetime.datetime.now() #We start the timer by storing the begining date & time
+        print "step begining time:"+str(self.__timer)+"now is :"+str(datetime.datetime.now())
+        if(((datetime.datetime.now()-self.__timer).total_seconds()//60)>=self.get_current_step().get_duration()):
+            self.goto_next_step()
 
     def user_force_next_step(self):
         """

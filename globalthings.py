@@ -41,7 +41,7 @@ HYSTERESIS = 1.0
 #model constants
 CALOR_WATER = 4186
 CALOR_GRAIN = 26
-HEATER_EFF = 0.85 #efficiency
+HEATER_EFF = 0.15 #efficiency
 HEAT_PROPORTIONNAL_LEAKS = 0.0008 #system temperature leaks
 HEAT_SQUARE_LEAKS = 0.000014 #system temperature leaks (for a closed tank) 0.00003 if open
 HEATER_EFFECT = 0.16 #Average increase of degrees of the mesh caused by one step of heater activation

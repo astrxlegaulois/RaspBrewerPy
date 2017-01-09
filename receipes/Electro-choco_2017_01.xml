@@ -4,7 +4,7 @@
         <step name="Montee initiale" type="TRANSITION" duration="20" index="1"/>
         <step name="Extraction des enzymes 50deg" type="LEVEL" duration="20" temperature="50" index="2"/>
         <step name="Montee post-enzymale" type="TRANSITION" duration="20" index="3"/>
-        <step name="Conversion de l amidon par les alpha et betas 68deg" type="LEVEL" duration="60" temperature="68" index="4"/>
+        <step name="Conversion de l amidon par les alpha et betas 68deg" type="LEVEL" duration="60" temperature="65" index="4"/>
         <step name="Verification de l absence d amidon residuel" type="STOP" duration="1" temperature="68" index="5"/>
         <step name="Montee suppression des proteines" type="TRANSITION" duration="20" index="6"/>
         <step name="Desactivation des proteines 78deg" type="LEVEL" duration="12" temperature="78" index="7"/>
