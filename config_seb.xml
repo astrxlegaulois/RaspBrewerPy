@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <config>
     <brewer name="Seb le Brasseur">
-        <receipe>./receipes/Electro-choco_2017_01.xml</receipe>
-        <tank name="Popote à Seb" diameter="40" drivetype="BOOLEAN">
+        <receipe>./receipes/Thetanos_2017_03.xml</receipe>
+        <tank name="Popote à Seb" diameter="40" drivetype="STEP_INERTIA">
             <equipments>
                 <thermometer name="Thermomètre cuve">
                     <path>/sys/bus/w1/devices/28-8000000119c6/w1_slave</path>
@@ -10,7 +10,7 @@
                 <heater name="BBQ" power="2000" GPIOpin="22"/>
             </equipments>
             <ingredients>
-                <ingredient name="Malt" type="Grain" quantity="1.5"/>
+                <ingredient name="Malt" type="Grain" quantity="1.9"/>
                 <ingredient name="Eau de source" type="Water" quantity="8.0"/>
             </ingredients>
         </tank>

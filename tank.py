@@ -13,7 +13,7 @@ class Tank:
             :param a_name: The name of the Tank
             :param a_thermometer: A ready to use Thermometer giving the brew's temperature
             :param a_diameter: The diameter of the tank in cm
-            :param a_drive_type: The temperature driving strategy : BOOLEAN, PID or PREDICTIVE
+            :param a_drive_type: The temperature driving strategy : BOOLEAN, PID, PREDICTIVE or STEP_INERTIA
             :type a_name: String
             :type a_thermometer: Thermometer
             :type a_diameter: int
@@ -27,6 +27,8 @@ class Tank:
         self.__last_temp=self.__thermometer.read_temperature()
         self.__heaters = []
         self.__ingredients = []
+        self.__prevtemp = 0
+        self.__prevprevtemp = 0
     
     
     def add_heater(self, a_heater):
@@ -98,7 +100,7 @@ class Tank:
             :return: the sum
             :rtype: int
         """
-	return ((2*n)*(n+1)*n)/6
+        return ((2*n)*(n+1)*n)/6
 
     def compute_nrj(self,ini_temperature,final_temperature,external_temperature):
         """
@@ -114,7 +116,7 @@ class Tank:
         """
         if(ini_temperature>final_temperature):
             return 0
-	    # heat losses estimation
+        # heat losses estimation
         heating_time=(final_temperature-ini_temperature)/(HEATER_EFFECT)
         print "Estimated TRANSITION time (seconds):"+str(heating_time*UPDATE_PERIOD)
         losses=HEAT_PROPORTIONNAL_LEAKS*((final_temperature+ini_temperature)/2-external_temperature)*heating_time #terrible aproximation. Integrals should be used. TODO just after passing all model constants en per-second.
@@ -179,9 +181,9 @@ class Tank:
                 if (self.__current_transition_energy_need==0):
                     self.__current_transition_energy_need=self.compute_nrj(cur_temp,next_target,external_temperature)
                     self.__current_transition_energy_done=0
-                if(cur_temp>next_target):  		#safety first
+                if(cur_temp>next_target):        #safety first
                     for a_heater in self.__heaters:
-                        a_heater.deactivate()						
+                        a_heater.deactivate()                        
                 elif((self.__last_temp<=cur_temp) and (self.__current_transition_energy_done<=self.__current_transition_energy_need)):  #target not reached using model, heating until temp reached... USE A FLAG HERE BECAUSE AS SOON AS THE FAILOVER HEATING HAS EFFECT IT STOPS....
                     print "heating!!!!"
                     for a_heater in self.__heaters:
@@ -194,6 +196,50 @@ class Tank:
         print "heating done:"+str(self.__current_transition_energy_done)+" of :"+str(self.__current_transition_energy_need)
         self.__last_temp=cur_temp
 
+
+    def temperature_step_inertia_drive(self, temperature_target, next_target, step_inertia):
+        """
+            Drives the heaters in order to follow the receipe, using each step's inertia
+            :param temperature_target: The current desired temperature for the tank
+            :param next_target: The desired temperature for the tank for the next level step
+            :param step_inertia: The inertia to be expected in degrees celcius at the end of the heating
+            :type temperature_target: float 
+            :type next_target: float 
+            :type step_inertia: float
+        """
+        cur_temp=self.__thermometer.read_temperature()
+        if(self.__drive_type==BOOLEAN):
+            if(temperature_target==next_target):                            #currently doing a LEVEL or STOP...   
+                if(self.__prevprevtemp>cur_temp):     #descending (down) profile 
+                    if(cur_temp>temperature_target-HYSTERESIS+step_inertia):
+                        for a_heater in self.__heaters:
+                            a_heater.deactivate()
+                    else:
+                        for a_heater in self.__heaters:
+                            a_heater.activate()
+                if(self.__prevprevtemp<=cur_temp):     #ascending (up) profile 
+                    if(cur_temp>temperature_target+HYSTERESIS-step_inertia):
+                        for a_heater in self.__heaters:
+                            a_heater.deactivate()
+                    else:
+                        for a_heater in self.__heaters:
+                            a_heater.activate()
+                if(cur_temp<=next_target-step_inertia-HYSTERESIS):             #protection against wrong up/down tendancies
+                    for a_heater in self.__heaters:
+                        a_heater.activate()
+                if(cur_temp>=next_target+step_inertia+HYSTERESIS):             #protection against wrong up/down tendancies
+                    for a_heater in self.__heaters:
+                        a_heater.deactivate()
+            else:                                                           #currently doing a TRANSITION...
+                if(cur_temp>=next_target-step_inertia):
+                    for a_heater in self.__heaters:
+                        a_heater.deactivate()
+                else:
+                    for a_heater in self.__heaters:
+                        a_heater.activate()
+        self.__prevprevtemp = self.__prevtemp
+        self.__prevtemp = cur_temp
+
     def get_heating_status(self):
         """
             Returns whether or not the heaters are activated
@@ -201,8 +247,9 @@ class Tank:
             :rtype: int
         """
         retval=0
-	cur_bit=0
-	for a_heater in self.__heaters:
+        cur_bit=0
+        for a_heater in self.__heaters:
             retval+=(a_heater.get_state()<<cur_bit)
             cur_bit+=1
         return retval
+

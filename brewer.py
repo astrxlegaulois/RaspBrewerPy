@@ -46,9 +46,11 @@ class Brewer:
         if(y.brewer.tank['drivetype']=="BOOLEAN"):
             self.__tank=Tank(y.brewer.tank['name'],int(y.brewer.tank['diameter']),thermo_tank, BOOLEAN)
         elif(y.brewer.tank['drivetype']=="PID"):
-            self.__tank=Tank(y.brewer.tank['name'],int(y.brewer.tank['diameter']),thermo_tank, PID)      
+            self.__tank=Tank(y.brewer.tank['name'],int(y.brewer.tank['diameter']),thermo_tank, PID)
         elif(y.brewer.tank['drivetype']=="PREDICTIVE"):
-            self.__tank=Tank(y.brewer.tank['name'],int(y.brewer.tank['diameter']),thermo_tank, PREDICTIVE)    
+            self.__tank=Tank(y.brewer.tank['name'],int(y.brewer.tank['diameter']),thermo_tank, PREDICTIVE)
+        elif(y.brewer.tank['drivetype']=="STEP_INERTIA"):
+            self.__tank=Tank(y.brewer.tank['name'],int(y.brewer.tank['diameter']),thermo_tank, STEP_INERTIA)
         for a_heater in y.find_all('heater'):
             self.__tank.add_heater(Heater(a_heater.get('name'),int(a_heater.get('power')),int(a_heater.get('GPIOpin'))))
         for an_ingredient in y.find_all('ingredient'):
@@ -129,10 +131,11 @@ class Brewer:
                 return True
             #self.__tank.temperature_hysteresis_drive(self.__receipe.get_current_temperature_instruction())
             #self.__tank.temperature_inertia_drive(self.__receipe.get_current_temperature_instruction(), self.__receipe.get_next_temperature_instruction())
-            self.__tank.temperature_model_drive(self.__receipe.get_current_temperature_instruction(), self.__receipe.get_next_temperature_instruction(),self.__outside_thermometer.read_temperature())
+            #self.__tank.temperature_model_drive(self.__receipe.get_current_temperature_instruction(), self.__receipe.get_next_temperature_instruction(),self.__outside_thermometer.read_temperature())
+            self.__tank.temperature_step_inertia_drive(self.__receipe.get_current_temperature_instruction(), self.__receipe.get_next_temperature_instruction(),self.__receipe.get_current_step().get_inertia())
             print "Current step : "+self.__receipe.get_current_step().print_self()
             print "Temperature instuction : "+str(self.__receipe.get_current_temperature_instruction())
-            print "Next Temperature instuction : "+str(self.__receipe.get_current_temperature_instruction())
+            print "Next Temperature instuction : "+str(self.__receipe.get_next_temperature_instruction())
             print "Current temperature : "+str(self.__tank.get_current_temperature())
             self.log_temperatures(a_outputfile)
             print 'Type "N" if you want to skip the current step',

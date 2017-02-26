@@ -52,7 +52,8 @@ class Receipe:
                         n_temperature=None
                     else:
                         n_temperature=float(found_steps[i].get('temperature'))
-                    self.add_step(Step(n_name,n_type,n_duration,n_temperature))
+                    n_inertia=found_steps[i].get('inertia')
+                    self.add_step(Step(n_name,n_type,n_duration,n_temperature,n_inertia))
                     break
         return self.__name
 

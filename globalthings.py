@@ -22,6 +22,7 @@ WATER = 0
 BOOLEAN = 0
 PID = 1
 PREDICTIVE = 2
+STEP_INERTIA = 3
 
 """
     Global update period for everything (in seconds) : temperature readouts and heaters status

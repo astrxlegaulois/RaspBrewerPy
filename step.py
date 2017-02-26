@@ -6,20 +6,22 @@ class Step:
     """
     
     
-    def __init__(self, a_name, a_type, a_duration, a_temperature=0.0):
+    def __init__(self, a_name, a_type, a_duration, a_temperature=0.0, an_inertia=0.0):
         """
             Constructor
             :param a_name: Name of the Step
             :param a_type: Type of the Step within LEVEL,TRANSITION or STOP
             :param a_duration: Duration of the Step in minutes (unused for a STOP Step)
             :param a_temperature: If the Step is not TRANSITION, the target temperature shall be send as parameter
+            :param an_inertia: The brew's inertia under those conditions in degrees Celcius. It is good to write 1 degree celcius less than target so that the step begins with a non heating step.
             :type a_name: String
             :type a_type: int LEVEL,TRANSITION or STOP
             :type a_duration: unsigned int
             :type a_temperature: float
+            :type an_inertia: float
             
             :Exemple:
-            >>> Step("Alpha proteines conversion Step", LEVEL, 35, 62)
+            >>> Step("Alpha proteines conversion Step", LEVEL, 35, 62, 1.2)
             good!
             
             .. warnings:: This function is unprotected against wrong parameters types or values. Use carfully
@@ -31,6 +33,7 @@ class Step:
         if(self.__duration==0):self.__duration+=1
         if(a_temperature==None):a_temperature=0
         self.__temperature = a_temperature
+        self.__inertia = an_inertia
 
 
     def get_name(self):
@@ -71,7 +74,15 @@ class Step:
             :rtype: unsigned int
         """
         return self.__duration
-      
+
+    def get_inertia(self):
+        """
+            Returns the inertia of the Step
+            
+            :return: Requested inertia of the Step in degrees celcius
+            :rtype: float
+        """
+        return self.__inertia   
 
     def interpolation(self, start_temperature, start_time, stop_temperature, current_time):
         """
@@ -108,5 +119,6 @@ class Step:
         elif(self.__step_type==LEVEL):to_print+=" Type : LEVEL"
         elif(self.__step_type==STOP):to_print+=" Type : STOP"
         to_print+=" Target temperature : "+str(self.__temperature)
+        to_print+=" current inertia : "+str(self.__inertia)
         to_print+=" Duration : "+str(self.__duration)+"\n"
         return to_print
