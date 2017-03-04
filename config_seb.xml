@@ -5,7 +5,9 @@
         <tank name="Popote à Seb" diameter="40" drivetype="STEP_INERTIA">
             <equipments>
                 <thermometer name="Thermomètre cuve">
-                    <path>/sys/bus/w1/devices/28-8000000119c6/w1_slave</path>
+                    <!-------Original probe (decesed)  <path>/sys/bus/w1/devices/28-8000000119c6/w1_slave</path>----->
+					<path>/sys/bus/w1/devices/28-800000011794/w1_slave</path>
+					<!-------Backup probe <path>/sys/bus/w1/devices/28-800000011c2b/w1_slave</path> ----->
                 </thermometer>
                 <heater name="BBQ" power="2000" GPIOpin="22"/>
             </equipments>
